@@ -2,10 +2,9 @@
 
 
 #define _DVORAK 0
-#define _WORKMAN 1
-#define _COLEMAK 2
-#define _RAISE 3
-#define _LOWER 4
+#define _GAMING 1
+#define _RAISE 2
+#define _LOWER 3
 
 // Fillers to make layering more clear
 
@@ -28,8 +27,7 @@
 #define KC_MB2 KC_MS_BTN2
 
 #define DVORAK DF(_DVORAK)
-#define WORKMAN DF(_WORKMAN)
-#define COLEMAK DF(_COLEMAK)
+#define GAMING DF(_GAMING)
 #define RAISE MO(_RAISE)
 #define LOWER MO(_LOWER)
 
@@ -66,17 +64,17 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                       KC_LCTL,   KC_EQL,  KC_TAB,  KC_SLSH
 ),
 
-/* WORKMAN
+/* GAMING
  * ,----------------------------------,                             ,----------------------------------,
- * |   q  |   d  |   r  |   w  |   b  |                             |   j  |   f  |   u  |   p  |   ;  |
+ * |      |      |   w  |      |      |                             |   f  |   g  |   c  |   r  |   l  |
  * |------+------+------+------+------|                             |-------------+------+------+------|
- * |   a  |   s  |   h  |   t  |   g  |                             |   y  |   n  |   e  |   o  |   i  |
+ * |      |   a  |   s  |   d  |      |                             |   d  |   h  |   t  |   n  |   s  |
  * |------+------+------+------+------|                             |------|------+------+------+------|
- * |   z  |   x  |   m  |   c  |   v  |                             |   k  |   l  |   ,  |   .  |   '  |
+ * |      |      |      |      |      |                             |   b  |   m  |   w  |   v  |   z  |
  * |------+------+------+-------------,                             ,-------------+------+------+------,
  *        |  [   |   ]  |                                                         |   (  |   )  |
  *        '------+------'-------------'                             '-------------'------+------'
- *                      | ESC  |  BS  |                             | SPACE|ENTER |
+ *                      | ESC  | SPACE|                             | SPACE|ENTER |
  *                      |      |      |                             |      |      |
  *                      | ALT  |      |                             |      |      |
  *                      '------+------'                             '------+------'
@@ -87,43 +85,12 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  *                                    '------+------' '------+------'
  */
 
-[_WORKMAN] = LAYOUT( \
-  KC_Q,    KC_D,    KC_R,    KC_W,    KC_B,                                       KC_J, KC_F,    KC_U,    KC_P,   KC_SCLN,    \
-  KC_A,    KC_S,    KC_H,    KC_T,    KC_G,                                       KC_Y, KC_N,    KC_E,    KC_O,   KC_I, \
-  KC_Z,    KC_X,    KC_M,    KC_C,    KC_V,                                       KC_K, KC_L,    KC_COMM, KC_DOT, KC_QUOT, \
+[_GAMING] = LAYOUT( \
+  ____,    ____,    KC_W,    ____,    ____,                                       KC_F, KC_G,    KC_C,    KC_R,   KC_L,    \
+  ____,    KC_A,    KC_S,    KC_D,    ____,                                       KC_D, KC_H,    KC_T,    KC_N,   KC_S, \
+  ____,    ____,    ____,    ____,    ____,                                       KC_B, KC_M,    KC_W,    KC_V,   KC_Z, \
               KC_LBRC, KC_RBRC,                                                   KC_LPRN, KC_RPRN,                   \
-                                      ALT_ESC, KC_BSPC,   KC_SPC,  KC_ENT,                                          \
-                                      KC_LSFT, KC_LGUI  ,   RAISE, LOWER,                                           \
-                                      KC_LCTL,   KC_EQL,  KC_TAB,  KC_SLSH
-),
-
-/* COLEMAK DH
- * ,----------------------------------,                             ,----------------------------------,
- * |   q  |   w  |   f  |   p  |   b  |                             |   j  |   l  |   u  |   y  |   ;  |
- * |------+------+------+------+------|                             |-------------+------+------+------|
- * |   a  |   r  |   s  |   h  |   g  |                             |   k  |   n  |   e  |   i  |   o  |
- * |------+------+------+------+------|                             |------|------+------+------+------|
- * |   z  |   x  |   c  |   d  |   v  |                             |   m  |   h  |   ,  |   .  |   '  |
- * |------+------+------+-------------,                             ,-------------+------+------+------,
- *        |  [   |   ]  |                                                         |   (  |   )  |
- *        '------+------'-------------'                             '-------------'------+------'
- *                      | ESC  |  BS  |                             | SPACE|ENTER |
- *                      |      |      |                             |      |      |
- *                      | ALT  |      |                             |      |      |
- *                      '------+------'                             '------+------'
- *                                    '------+------' '------+------'
- *                                    | GUI  | SHIFT| | LOWER| RAISE|
- *                                    '------+------' '------+------'
- *                                    | =    |  CTRL| | /    | TAB  |
- *                                    '------+------' '------+------'
- */
-
-[_COLEMAK] = LAYOUT( \
-  KC_Q,    KC_W,    KC_F,    KC_P,    KC_B,                                       KC_J, KC_L,    KC_U,    KC_Y,   KC_SCLN,    \
-  KC_A,    KC_R,    KC_S,    KC_H,    KC_G,                                       KC_K, KC_N,    KC_E,    KC_I,   KC_O, \
-  KC_Z,    KC_X,    KC_C,    KC_D,    KC_V,                                       KC_M, KC_H,    KC_COMM, KC_DOT, KC_QUOT, \
-              KC_LBRC, KC_RBRC,                                                   KC_LPRN, KC_RPRN,                   \
-                                      ALT_ESC, KC_BSPC,   KC_SPC,  KC_ENT,                                          \
+                                      ALT_ESC, KC_SPC,   KC_SPC,  KC_ENT,                                          \
                                       KC_LSFT, KC_LGUI  ,   RAISE, LOWER,                                           \
                                       KC_LCTL,   KC_EQL,  KC_TAB,  KC_SLSH
 ),
@@ -134,9 +101,9 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |------+------+------+-------+-------|                             |------+------+------+------+------|
  * | F6   | F7   | F8   | F9    | F10   |                             | left | down | up   | right|      |
  * |------+------+------+-------+-------|                             |------+------+------+------+------|
- * | F11  | F12  |DVORAK|WORKMAN|COLEMAK|                             | VOL- |      |      |      |      |
+ * | F11  | F12  | F13  | F14   | F15   |                             | VOL- |      |      |      |      |
  * |------+------+------+-------------,                             ,-------------+------+------+------,
- *        |      |      |                                                         |      |      |
+ *        |DVORAK|GAMING|                                                         |      |      |
  *        '------+------'-------------'                             '-------------'------+------'
  *                      |      |      |                             |      |      |
  *                      |      |      |                             |      |      |
@@ -150,10 +117,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  */
 
 [_RAISE] = LAYOUT( \
-  KC_F1, KC_F2, KC_F3,     KC_F4, KC_F5,                          KC_VOLU, ____,    ____,    ____,  ____,   \
-  KC_F6, KC_F7, KC_F8,     KC_F9, KC_F10,                         KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT,  ____, \
-  KC_F11,KC_F12, DVORAK, WORKMAN, COLEMAK,                        KC_VOLD, ____,    ____,    ____,  ____,      \
-        ____,  ____,                                                            ____,    ____,              \
+  KC_F1,  KC_F2,  KC_F3,     KC_F4,  KC_F5,                          ____,    ____,    ____,    ____,  ____,   \
+  KC_F6,  KC_F7,  KC_F8,     KC_F9,  KC_F10,                         KC_LEFT, KC_DOWN, KC_UP,   KC_RIGHT,  ____, \
+  KC_F11, KC_F12, KC_F13,    KC_F14, KC_F15,                        ____,    ____,    ____,    ____,  ____,      \
+        DVORAK,  GAMING,                                                            ____,    ____,              \
                                    ____, ____,  ____, ____,                                                 \
                                    ____, ____,  ____, ____,                                                 \
                                    RESET,____,  ____, RESET                                                  \
