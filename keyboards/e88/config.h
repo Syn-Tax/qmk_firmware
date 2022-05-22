@@ -1,4 +1,4 @@
-/* Copyright 2019 Maarten Dekkers <maartenwut@gmail.com>
+/* Copyright 2019 Evy Dekkers
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -99,10 +99,6 @@
 //#define NO_ACTION_LAYER
 //#define NO_ACTION_TAPPING
 //#define NO_ACTION_ONESHOT
-
-/* disable these deprecated features by default */
-#define NO_ACTION_MACRO
-#define NO_ACTION_FUNCTION
 
 #define QMK_ESC_OUTPUT F0 // usually COL
 #define QMK_ESC_INPUT B7 // usually ROW

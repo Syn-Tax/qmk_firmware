@@ -70,7 +70,7 @@ void matrix_init_custom(void) {
 // Reads and stores a row, returning
 // whether a change occurred.
 static inline bool store_raw_matrix_row(uint8_t index) {
-    matrix_row_t temp = read_cols(index);
+    matrix_row_t temp = 0x3F & read_cols(index);
     if (raw_matrix[index] != temp) {
         raw_matrix[index] = temp;
         return true;
@@ -236,4 +236,19 @@ static void select_row(uint8_t row) {
                 break;
         }
     }
+}
+
+// DO NOT REMOVE
+// Needed for proper wake/sleep
+void matrix_power_up(void) {
+    mcp23018_status = init_mcp23018();
+
+    unselect_rows();
+    init_cols();
+
+    // initialize matrix state: all keys off
+    for (uint8_t i=0; i < MATRIX_ROWS; i++) {
+        matrix[i] = 0;
+    }
+
 }
