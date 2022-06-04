@@ -9,16 +9,22 @@
 // Fillers to make layering more clear
 
 #define ____ KC_TRNS
+#define XXXX KC_NO
 
 // Mod Tap
-#define SFT_ESC  SFT_T(KC_ESC)
-#define CTL_BSPC CTL_T(KC_BSPC)
-#define ALT_SPC  ALT_T(KC_SPC)
-#define SFT_ENT  SFT_T(KC_ENT)
 #define ALT_ESC  ALT_T(KC_ESC)
 
+// Home row mods
+#define SFT_U LSFT_T(KC_U)
+#define CTL_E LCTL_T(KC_E)
+
+#define SFT_H LSFT_T(KC_H)
+#define CTRL_T LCTL_T(KC_T)
+
+// Mod keys
 #define SFT_INS  LSFT(KC_INS)
 
+// Mouse keys
 #define KC_ML KC_MS_LEFT
 #define KC_MR KC_MS_RIGHT
 #define KC_MU KC_MS_UP
@@ -56,7 +62,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
 [_DVORAK] = LAYOUT( \
   KC_QUOT, KC_COMM, KC_DOT,  KC_P,    KC_Y,                                       KC_F, KC_G,    KC_C,    KC_R,   KC_L,    \
-  KC_A,    KC_O,    KC_E,    KC_U,    KC_I,                                       KC_D, KC_H,    KC_T,    KC_N,   KC_S, \
+  KC_A,    KC_O,    CTL_E,    SFT_U,    KC_I,                                       KC_D, SFT_H,    CTRL_T,    KC_N,   KC_S, \
   KC_SCLN, KC_Q,    KC_J,    KC_K,    KC_X,                                       KC_B, KC_M,    KC_W,    KC_V,   KC_Z, \
               KC_LBRC, KC_RBRC,                                                   KC_LPRN, KC_RPRN,                   \
                                       ALT_ESC, KC_BSPC,   KC_SPC,  KC_ENT,                                          \
