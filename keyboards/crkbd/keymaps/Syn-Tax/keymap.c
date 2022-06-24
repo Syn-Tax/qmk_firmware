@@ -44,27 +44,30 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 #define ALT_ESC ALT_T(KC_ESC)
 #define CTL_ENT CTL_T(KC_ENT)
+#define SFT_BS SFT_T(KC_BSPC)
+#define GUI_SPC GUI_T(KC_SPC)
+
 #define SFT_INS LSFT(KC_INS)
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* DVORAK
       ,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      |  /     |   '    |   ,    |   .    |   p    |   y    |                    |   f    |   g    |   c    |   r    |   l    |    =   |
+      |        |   '    |   ,    |   .    |   p    |   y    |                    |   f    |   g    |   c    |   r    |   l    |        |
       |--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      |  GUI   |   a    |   o    |   e    |   u    |   i    |                    |   d    |   h    |   t    |   n    |   s    |    [   |
+      |        |   a    |   o    |   e    |   u    |   i    |                    |   d    |   h    |   t    |   n    |   s    |        |
       |--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      | SHIFT  |   ;    |   q    |   j    |   k    |   x    |                    |   b    |   m    |   w    |   v    |   z    |    (   |
+      |        |   ;    |   q    |   j    |   k    |   x    |                    |   b    |   m    |   w    |   v    |   z    |        |
       |--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           | RAISE  |   ESC  |   BS   |  | SPACE  | ENTER  | LOWER  |
                                           |        |        |        |  |        |        |        |
-                                          |        |   ALT  |        |  |        |  CTRL  |        |
+                                          |        |   ALT  | SHIFT  |  |  GUI   |  CTRL  |        |
                                           `--------------------------'  `--------------------------'
     */
 [_DVORAK] = LAYOUT_split_3x6_3(
-    XXXX,    KC_QUOT, KC_COMM,  KC_DOT, KC_P, KC_Y,                                   KC_F,  KC_G,  KC_C,  KC_R,  KC_L,  KC_SLSH, \
-    KC_LGUI, KC_A,    KC_O,     KC_E,   KC_U, KC_I,                                   KC_D,  KC_H,  KC_T,  KC_N,  KC_S,  KC_EQL, \
-    KC_LSFT, KC_SCLN, KC_Q,     KC_J,   KC_K, KC_X,                                   KC_B,  KC_M,  KC_W,  KC_V,  KC_Z,  KC_LPRN, \
-                                 RAISE, ALT_ESC, KC_BSPC,               KC_SPC, CTL_ENT, LOWER
+    XXXX,    KC_QUOT, KC_COMM,  KC_DOT, KC_P, KC_Y,                                   KC_F,  KC_G,  KC_C,  KC_R,  KC_L,  XXXX, \
+    XXXX, KC_A,    KC_O,     KC_E,   KC_U, KC_I,                                   KC_D,  KC_H,  KC_T,  KC_N,  KC_S,  XXXX, \
+    XXXX, KC_SCLN, KC_Q,     KC_J,   KC_K, KC_X,                                   KC_B,  KC_M,  KC_W,  KC_V,  KC_Z,  XXXX, \
+                                 RAISE, ALT_ESC, SFT_BS,               GUI_SPC, CTL_ENT, LOWER
 
                                ),
 
@@ -93,32 +96,32 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
 
     /* RAISE
       ,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      | DVORAK |   F1   |   F2   |   F3   |   F4   |   F5   |                    |        |        |        |        |        |        |
+      | DVORAK |   F1   |   F2   |   F3   |   F4   |   F5   |                    |   [    |    (   |   )    |    ]   |        |        |
       |--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
       | STENO  |   F6   |   F7   |   F8   |   F9   |   F10  |                    |  left  |   up   |  down  | right  |SHFT INS|        |
       |--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      | ADJUST |  F11   |  F12   |  F13   |  F15   |   F15  |                    |        |        |        |        |        |        |
+      | ADJUST |  F11   |  F12   |  F13   |  F15   |   F15  |                    |    +   |    {   |   }    |        |        |        |
       |--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                          | RAISE  |        |        |  |        |        |        |
+                                          | RAISE  |        |        |  |    =   |    -   |    _   |
                                           |        |        |        |  |        |        |        |
                                           |        |        |        |  |        |        |        |
                                           `--------------------------'  `--------------------------'
     */
 [_RAISE] = LAYOUT_split_3x6_3(
-    DVORAK, KC_F1,  KC_F2,   KC_F3,  KC_F4,  KC_F5,                               XXXX,     XXXX,   XXXX,     XXXX,    XXXX,     XXXX, \
-    STENO,  KC_F6,  KC_F7,   KC_F8,  KC_F9,  KC_F10,                              KC_LEFT,  KC_UP,  KC_DOWN,  KC_RGHT, SFT_INS,  XXXX, \
-    ADJUST, KC_F11, KC_F12,  KC_F13, KC_F14, KC_F15,                              XXXX,     XXXX,   XXXX,     XXXX,    XXXX,     XXXX, \
-                                            RAISE, XXXX, XXXX,               XXXX, XXXX, XXXX
+    DVORAK, KC_F1,  KC_F2,   KC_F3,  KC_F4,  KC_F5,                               KC_LBRC,      KC_LPRN, KC_RPRN,  KC_RBRC, XXXX,     XXXX, \
+    STENO,  KC_F6,  KC_F7,   KC_F8,  KC_F9,  KC_F10,                              KC_LEFT,      KC_UP,   KC_DOWN,  KC_RGHT, SFT_INS,  XXXX, \
+    ADJUST, KC_F11, KC_F12,  KC_F13, KC_F14, KC_F15,                              LSFT(KC_EQL), KC_LCBR, KC_RCBR,  XXXX,    XXXX,     XXXX, \
+                                            RAISE, XXXX, XXXX,               KC_EQL, KC_MINS, LSFT(KC_MINS)
 
                               ),
 
     /* LOWER
       ,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      |        |   `    |    &   |   *    |        |   \    |                    |        |   7    |   8    |   9    |   {    |    }   |
+      |        |   `    |    &   |   *    | SFTINS |   \    |                    |        |   7    |   8    |   9    |        |        |
       |--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      |        |   ~    |    $   |   %    |   ^    |   |    |                    |        |   4    |   5    |   6    |        |    ]   |
+      |        |   ~    |    $   |   %    |   ^    |   |    |                    |        |   4    |   5    |   6    |        |        |
       |--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      |        |   -    |    !   |   @    |   #    |        |                    |    0   |   1    |   2    |   3    |        |    )   |
+      |        |   -    |    !   |   @    |   #    |   /    |                    |    0   |   1    |   2    |   3    |        |        |
       |--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           |        |        |        |  |        |        | LOWER  |
                                           |        |        |        |  |        |        |        |
@@ -126,7 +129,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                           `--------------------------'  `--------------------------'
     */
 [_LOWER] = LAYOUT_split_3x6_3(
-    XXXX, KC_GRV,   KC_AMPR,  KC_ASTR,  XXXX,    KC_BSLS,                           XXXX,  KC_7,  KC_8,  KC_9,  KC_LCBR, KC_RCBR, \
+    XXXX, KC_GRV,   KC_AMPR,  KC_ASTR,  SFT_INS, KC_BSLS,                           XXXX,  KC_7,  KC_8,  KC_9,  KC_LCBR, KC_RCBR, \
     XXXX, KC_MINS,  KC_DLR,   KC_PERC,  KC_CIRC, KC_PIPE,                           XXXX,  KC_4,  KC_5,  KC_6,  XXXX,    KC_RBRC, \
     XXXX, KC_TILDE, KC_EXLM,  KC_AT,    KC_HASH, XXXX,                              KC_0,  KC_1,  KC_2,  KC_3,  XXXX,    KC_RPRN, \
                                             XXXX, XXXX, XXXX,               XXXX, XXXX, LOWER
