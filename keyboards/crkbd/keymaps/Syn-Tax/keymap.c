@@ -23,16 +23,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // Layer definitions
 
 #define _DVORAK 0
-#define _STENO 1
-#define _RAISE 2
-#define _LOWER 3
-#define _ADJUST 4
+#define _RAISE 1
+#define _LOWER 2
+#define _FUNC 3
 
 #define DVORAK DF(_DVORAK)
-#define STENO DF(_STENO)
 #define RAISE MO(_RAISE)
 #define LOWER MO(_LOWER)
-#define ADJUST DF(_ADJUST)
+#define FUNC MO(_FUNC)
 
 // Filler
 
@@ -41,9 +39,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 // Mod Tap
 
-#define ALT_ESC ALT_T(KC_ESC)
-#define CTL_ENT CTL_T(KC_ENT)
-#define CTL_BSPC LCTL(KC_BSPC)
+#define SFT_SPC LSFT_T(KC_SPC)
+#define CTL_BSP LCTL_T(KC_BSPC)
+#define RS_ESC LT(_RAISE, KC_ESC)
+#define LR_ENT LT(_LOWER, KC_ENT)
 
 // Mouse Keys
 
@@ -55,52 +54,15 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define KC_MB2 KC_MS_BTN2
 #define KC_MB3 KC_MS_BTN3
 
-// Tap dance definitions
-typedef struct {
-    bool is_press_action;
-    int  state;
-} tap;
-
-enum {
-    SINGLE_TAP        = 1,
-    SINGLE_HOLD       = 2,
-    DOUBLE_TAP        = 3,
-    DOUBLE_HOLD       = 4,
-    DOUBLE_SINGLE_TAP = 5, // send two single taps
-    TRIPLE_TAP        = 6,
-    TRIPLE_HOLD       = 7
-};
-
-// Tap dance enums
-enum {
-CTL_BSP = 0,
-PRN = 1,
-BRC = 2
-};
-
-int cur_dance(qk_tap_dance_state_t *state);
-
-// for the x tap dance. Put it here so it can be used in any keymap
-// CTRL_BSPC
-void ctl_bspc_finished(qk_tap_dance_state_t *state, void *user_data);
-void ctl_bspc_reset(qk_tap_dance_state_t *state, void *user_data);
-
-// Paren
-void paren_finished(qk_tap_dance_state_t *state, void *user_data);
-void paren_reset(qk_tap_dance_state_t *state, void *user_data);
-
-// Brackets
-void bracket_finished(qk_tap_dance_state_t *state, void *user_data);
-void bracket_reset(qk_tap_dance_state_t *state, void *user_data);
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     /* DVORAK
       ,-----------------------------------------------------.                    ,-----------------------------------------------------.
-      |  /     |   '    |   ,    |   .    |   p    |   y    |                    |   f    |   g    |   c    |   r    |   l    |    =   |
+      |  F15   |   '    |   ,    |   .    |   p    |   y    |                    |   f    |   g    |   c    |   r    |   l    |        |
       |--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      |  GUI   |   a    |   o    |   e    |   u    |   i    |                    |   d    |   h    |   t    |   n    |   s    |    [   |
+      |  F14   |   a    |   o    |   e    |   u    |   i    |                    |   d    |   h    |   t    |   n    |   s    |        |
       |--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-      | SHIFT  |   ;    |   q    |   j    |   k    |   x    |                    |   b    |   m    |   w    |   v    |   z    |    (   |
+      |  F13   |   ;    |   q    |   j    |   k    |   x    |                    |   b    |   m    |   w    |   v    |   z    |        |
       |--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                           | RAISE  |   ESC  |   BS   |  | SPACE  | ENTER  | LOWER  |
                                           |        |        |        |  |        |        |        |
@@ -108,171 +70,76 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
                                           `--------------------------'  `--------------------------'
     */
 [_DVORAK] = LAYOUT_split_3x6_3(
-    XXXX,    KC_QUOT, KC_COMMM, KC_DOT, KC_P, KC_Y,                                   KC_F,  KC_G,  KC_C,  KC_R,  KC_L,  KC_SLSH, \
-    KC_LGUI, KC_A,    KC_O,     KC_E,   KC_U, KC_I,                                   KC_D,  KC_H,  KC_T,  KC_N,  KC_S,  KC_EQL, \
-    KC_LSFT, KC_SCLN, KC_Q,     KC_J,   KC_K, KC_X,                                   KC_B,  KC_M,  KC_W,  KC_V,  KC_Z,  KC_LPRN, \
-                                 RAISE, ALT_ESC, KC_BSPC,               KC_SPC, CTL_ENT, LOWER
+    KC_F15, KC_QUOT, KC_COMMM, KC_DOT, KC_P, KC_Y,                                   KC_F,  KC_G,  KC_C,  KC_R,  KC_L,  XXXX, \
+    KC_F14, KC_A,    KC_O,     KC_E,   KC_U, KC_I,                                   KC_D,  KC_H,  KC_T,  KC_N,  KC_S,  XXXX, \
+    KC_F13, KC_SCLN, KC_Q,     KC_J,   KC_K, KC_X,                                   KC_B,  KC_M,  KC_W,  KC_V,  KC_Z,  XXXX, \
+                                 KC_LGUI, RS_ESC, CTL_BSP,               SFT_SPC, LR_ENT, KC_LALT
 
                                    ),
-/*
-    [1] = LAYOUT_split_3x6_3(
-        //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-        KC_TAB, KC_1, KC_2, KC_3, KC_4, KC_5, KC_6, KC_7, KC_8, KC_9, KC_0, KC_BSPC,
-        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-        KC_LCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, XXXXXXX, XXXXXXX,
-        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-        KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-        KC_LGUI, _______, KC_SPC, KC_ENT, MO(3), KC_RALT
-        //`--------------------------'  `--------------------------'
-        ),
 
-    [2] = LAYOUT_split_3x6_3(
-        //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-        KC_TAB, KC_EXLM, KC_AT, KC_HASH, KC_DLR, KC_PERC, KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_BSPC,
-        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-        KC_LCTL, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_MINS, KC_EQL, KC_LBRC, KC_RBRC, KC_BSLS, KC_GRV,
-        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-        KC_LSFT, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, KC_UNDS, KC_PLUS, KC_LCBR, KC_RCBR, KC_PIPE, KC_TILD,
-        //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-        KC_LGUI, MO(3), KC_SPC, KC_ENT, _______, KC_RALT
-        //`--------------------------'  `--------------------------'
-        ),
+    /* RAISE
+      ,-----------------------------------------------------.                    ,-----------------------------------------------------.
+      |        |   '    |   ,    |   .    |   p    |  DEL   |                    |   f    |   g    |   c    |   r    |   l    |        |
+      |--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      |        |   a    |   o    |   e    |   u    |  TAB   |                    |   LF   |   DN   |   UP   |   RT   |   s    |        |
+      |--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      |        |   ;    |   q    |   j    |   k    |   x    |                    |   b    |   m    |   w    |   v    |   z    |        |
+      |--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                          | RAISE  |   ESC  |   BS   |  | SPACE  | ENTER  | LOWER  |
+                                          |        |        |        |  |        |        |        |
+                                          |        |   ALT  |        |  |        |  CTRL  |        |
+                                          `--------------------------'  `--------------------------'
+    */
+[_RAISE] = LAYOUT_split_3x6_3(
+    KC_F15, KC_QUOT, KC_COMMM, KC_DOT, KC_P, KC_DEL,                                 KC_F,    KC_G,  KC_C,  KC_R,    KC_L,  XXXX, \
+    KC_F14, KC_A,    KC_O,     KC_E,   KC_U, KC_TAB,                                 KC_LEFT, KC_DN, KC_UP, KC_RGHT, KC_S,  XXXX, \
+    KC_F13, KC_SCLN, KC_Q,     KC_J,   KC_K, KC_X,                                   KC_B,    KC_M,  KC_W,  KC_V,    KC_Z,  XXXX, \
+                                 KC_LGUI, RS_ESC, CTL_BSP,               SFT_SPC, LR_ENT, KC_LALT
 
-    [3] = LAYOUT_split_3x6_3(
-        //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-        RESET, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-        RGB_TOG, RGB_HUI, RGB_SAI, RGB_VAI, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-        RGB_MOD, RGB_HUD, RGB_SAD, RGB_VAD, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,
-        //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-        KC_LGUI, _______, KC_SPC, KC_ENT, _______, KC_RALT
-        //`--------------------------'  `--------------------------'
-        )
-        */
-        };
+                                   ),
 
-int cur_dance(qk_tap_dance_state_t *state) {
-    if (state->count == 1) {
-        if (state->interrupted || !state->pressed) return SINGLE_TAP;
-        // key has not been interrupted, but they key is still held. Means you want to send a 'HOLD'.
-        else
-            return SINGLE_HOLD;
-    } else if (state->count == 2) {
-        /*
-         * DOUBLE_SINGLE_TAP is to distinguish between typing "pepper", and actually wanting a double tap
-         * action when hitting 'pp'. Suggested use case for this return value is when you want to send two
-         * keystrokes of the key, and not the 'double tap' action/macro.
-         */
-        if (state->interrupted)
-            return DOUBLE_SINGLE_TAP;
-        else if (state->pressed)
-            return DOUBLE_HOLD;
-        else
-            return DOUBLE_TAP;
-    }
-    // Assumes no one is trying to type the same letter three times (at least not quickly).
-    // If your tap dance key is 'KC_W', and you want to type "www." quickly - then you will need to add
-    // an exception here to return a 'TRIPLE_SINGLE_TAP', and define that enum just like 'DOUBLE_SINGLE_TAP'
-    if (state->count == 3) {
-        if (state->interrupted || !state->pressed)
-            return TRIPLE_TAP;
-        else
-            return TRIPLE_HOLD;
-    } else
-        return 8; // magic number. At some point this method will expand to work for more presses
+    /* LOWER
+      ,-----------------------------------------------------.                    ,-----------------------------------------------------.
+      |        |   `    |   [    |   (    |   )    |   ]    |                    |   =    |   7    |   8    |   9    |   -    |        |
+      |--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      |        |  ALT   |  GUI   |  CTL   |  SFT   |   |    |                    |   +    |   4    |   5    |   6    |   _    |        |
+      |--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      |        |        |        |   ~    |   \    |   /    |                    |   0    |   1    |   2    |   3    |   ?    |        |
+      |--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                          | RAISE  |   ESC  |   BS   |  | SPACE  | ENTER  | LOWER  |
+                                          |        |        |        |  |        |        |        |
+                                          |        |   ALT  |        |  |        |  CTRL  |        |
+                                          `--------------------------'  `--------------------------'
+    */
+[_LOWER] = LAYOUT_split_3x6_3(
+    KC_F15, KC_GRV,  KC_LBRC, KC_LPRN, KC_RPRN, KC_RBRC,                                   KC_EQL,  KC_7,  KC_8,  KC_9,  KC_MINS, XXXX, \
+    KC_F14, KC_LALT, KC_LGUI, KC_LCTL, KC_LSFT, KC_PIPE,                                   KC_PLUS, KC_4,  KC_5,  KC_6,  KC_UNDS, XXXX, \
+    KC_F13, XXXX,    XXXX,    KC_TILD, KC_BSLS, KC_SLSH,                                   KC_0,    KC_1,  KC_2,  KC_3,  KC_Z,    XXXX, \
+                                 KC_LGUI, RS_ESC, CTL_BSP,               SFT_SPC, LR_ENT, KC_LALT
+
+                                   ),
+    /* FUNC
+      ,-----------------------------------------------------.                    ,-----------------------------------------------------.
+      |        |   F1   |   F2   |   F3   |   F4   |   F5   |                    |   =    |   7    |   8    |   9    |   -    |        |
+      |--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      |        |   F6   |   F7   |   F8   |   F9   |   F10  |                    |   +    |   4    |   5    |   6    |   _    |        |
+      |--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
+      |        |   F11  |   F12  |   F13  |   F14  |   F15  |                    |   0    |   1    |   2    |   3    |   ?    |        |
+      |--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
+                                          | RAISE  |   ESC  |   BS   |  | SPACE  | ENTER  | LOWER  |
+                                          |        |        |        |  |        |        |        |
+                                          |        |   ALT  |        |  |        |  CTRL  |        |
+                                          `--------------------------'  `--------------------------'
+    */
+[_FUNC] = LAYOUT_split_3x6_3(
+    KC_F15, KC_F1,  KC_F2,  KC_F3,  KC_F4,  KC_F5,                                 KC_EQL,  KC_7, KC_8, KC_9, KC_MINS, XXXX, \
+    KC_F14, KC_F6,  KC_F7,  KC_F8,  KC_F9,  KC_F10,                                KC_PLUS, KC_4, KC_5, KC_6, KC_UNDS, XXXX, \
+    KC_F13, KC_F11, KC_F12, KC_F13, KC_F14, KC_F15,                                KC_0,    KC_1, KC_2, KC_3, KC_Z,    XXXX, \
+                                 KC_LGUI, RS_ESC, CTL_BSP,               SFT_SPC, LR_ENT, KC_LALT
+
+                                   ),
 }
 
-// instanalize an instance of 'tap' for the 'x' tap dance.
-static tap xtap_state = {.is_press_action = true, .state = 0};
-
-
-// CTRL BSPC
-void ctl_bspc_finished(qk_tap_dance_state_t *state, void *user_data) {
-    xtap_state.state = cur_dance(state);
-    switch (xtap_state.state) {
-        case SINGLE_TAP: register_code(KC_BSPC); break;
-        case SINGLE_HOLD: register_code(CTL_BSPC); break;
-        case DOUBLE_TAP: register_code(KC_BSPC); break;
-        case DOUBLE_HOLD: register_code(CTL_BSPC); break;
-        case DOUBLE_SINGLE_TAP: register_code(KC_BSPC); unregister_code(KC_BSPC); register_code(KC_BSPC);
-            // Last case is for fast typing. Assuming your key is `f`:
-            // For example, when typing the word `buffer`, and you want to make sure that you send `ff` and not `Esc`.
-            // In order to type `ff` when typing fast, the next character will have to be hit within the `TAPPING_TERM`, which by default is 200ms.
-    }
-}
-
-void ctl_bspc_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch (xtap_state.state) {
-        case SINGLE_TAP: unregister_code(KC_BSPC); break;
-        case SINGLE_HOLD: unregister_code(CTL_BSPC); break;
-        case DOUBLE_TAP: unregister_code(KC_BSPC); break;
-        case DOUBLE_HOLD: unregister_code(CTL_BSPC);
-        case DOUBLE_SINGLE_TAP: unregister_code(KC_BSPC);
-    }
-    xtap_state.state = 0;
-}
-
-
-// PAREN
-void paren_finished(qk_tap_dance_state_t *state, void *user_data) {
-    xtap_state.state = cur_dance(state);
-    switch (xtap_state.state) {
-        case SINGLE_TAP: register_code(KC_LPRN); break;
-        case SINGLE_HOLD: register_code(KC_LPRN); break;
-        case DOUBLE_TAP: register_code(KC_RPRN); break;
-        case DOUBLE_HOLD: register_code(KC_RPRN); break;
-        case DOUBLE_SINGLE_TAP: register_code(KC_LPRN); unregister_code(KC_LPRN); register_code(KC_LPRN);
-            // Last case is for fast typing. Assuming your key is `f`:
-            // For example, when typing the word `buffer`, and you want to make sure that you send `ff` and not `Esc`.
-            // In order to type `ff` when typing fast, the next character will have to be hit within the `TAPPING_TERM`, which by default is 200ms.
-    }
-}
-
-void paren_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch (xtap_state.state) {
-        case SINGLE_TAP: unregister_code(KC_LPRN); break;
-        case SINGLE_HOLD: unregister_code(KC_LPRN); break;
-        case DOUBLE_TAP: unregister_code(KC_RPRN); break;
-        case DOUBLE_HOLD: unregister_code(KC_RPRN);
-        case DOUBLE_SINGLE_TAP: unregister_code(KC_LPRN);
-    }
-    xtap_state.state = 0;
-}
-
-
-// BRACKET
-void bracket_finished(qk_tap_dance_state_t *state, void *user_data) {
-    xtap_state.state = cur_dance(state);
-    switch (xtap_state.state) {
-        case SINGLE_TAP: register_code(KC_LBRC); break;
-        case SINGLE_HOLD: register_code(KC_LBRC); break;
-        case DOUBLE_TAP: register_code(KC_RBRC); break;
-        case DOUBLE_HOLD: register_code(KC_RBRC); break;
-        case DOUBLE_SINGLE_TAP: register_code(KC_LBRC); unregister_code(KC_LBRC); register_code(KC_LBRC);
-            // Last case is for fast typing. Assuming your key is `f`:
-            // For example, when typing the word `buffer`, and you want to make sure that you send `ff` and not `Esc`.
-            // In order to type `ff` when typing fast, the next character will have to be hit within the `TAPPING_TERM`, which by default is 200ms.
-    }
-}
-
-void bracket_reset(qk_tap_dance_state_t *state, void *user_data) {
-    switch (xtap_state.state) {
-        case SINGLE_TAP: unregister_code(KC_LBRC); break;
-        case SINGLE_HOLD: unregister_code(KC_LBRC); break;
-        case DOUBLE_TAP: unregister_code(KC_RBRC); break;
-        case DOUBLE_HOLD: unregister_code(KC_RBRC);
-        case DOUBLE_SINGLE_TAP: unregister_code(KC_LBRC);
-    }
-    xtap_state.state = 0;
-}
-
-qk_tap_dance_action_t tap_dance_actions[] = {
-    [CTL_BSP] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, ctl_bspc_finished, ctl_bspc_reset),
-    [PRN] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, paren_finished, paren_reset),
-    [BRC] = ACTION_TAP_DANCE_FN_ADVANCED(NULL, bracket_finished, bracket_reset)
-};
 
 #ifdef OLED_ENABLE
 oled_rotation_t oled_init_user(oled_rotation_t rotation) {
